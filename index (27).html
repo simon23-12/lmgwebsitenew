@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content=""/>
+    <meta name="robots" content="index, follow, archive"/>
+    <meta name="generator" content="Jimdo Creator"/>
+    <meta name="twitter:title" content="Herzlich willkommen auf unseren Webseiten!"/>
+    <meta name="twitter:description" content="Haben Sie Fragen oder Anmerkungen zu unserem Internetauftritt? Schreiben Sie gerne eine Mail an unser Team Öffentlichkeitsarbeit!"/>
+    <meta property="og:url" content="http://www.leibniz-montessori.de/"/>
+    <meta property="og:title" content="Herzlich willkommen auf unseren Webseiten!"/>
+    <meta property="og:description" content="Haben Sie Fragen oder Anmerkungen zu unserem Internetauftritt? Schreiben Sie gerne eine Mail an unser Team Öffentlichkeitsarbeit!"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:locale" content="de_DE"/>
+    <meta property="og:site_name" content="Leibniz-Montessori-Gymnasium Düsseldorf"/>
+    
+    <title>Herzlich willkommen auf unseren Webseiten! - Leibniz-Montessori-Gymnasium Düsseldorf</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #2c5f7d;
+            --color-secondary: #e8b86d;
+            --color-accent: #c17a4f;
+            --color-background: #fafaf8;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-light: #5a5a5a;
+            --color-border: #e5e5e0;
+            
+            --font-heading: 'Literata', serif;
+            --font-body: 'Work Sans', sans-serif;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Header & Logo */
+        .site-header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-image {
+            height: 60px;
+            width: auto;
+        }
+        
+        /* Navigation */
+        .main-nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .nav-menu > li {
+            position: relative;
+        }
+        
+        .nav-menu > li > a {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .nav-menu > li > a:hover,
+        .nav-menu > li > a.active {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        /* Dropdown Menu */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 280px;
+            background: var(--color-surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 1000;
+            margin-top: 0.5rem;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .nav-menu > li:hover > .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            max-height: 600px;
+        }
+        
+        .dropdown ul {
+            list-style: none;
+            padding: 0.5rem;
+        }
+        
+        .dropdown li {
+            margin: 0;
+        }
+        
+        .dropdown li a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: var(--color-text);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .dropdown li a:hover {
+            background: var(--color-background);
+            color: var(--color-primary);
+            padding-left: 1.5rem;
+        }
+        
+        /* Third Level Dropdown */
+        .dropdown .dropdown {
+            left: 100%;
+            top: 0;
+            margin-left: 0.5rem;
+            margin-top: 0;
+        }
+        
+        .dropdown li:hover > .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            max-height: 600px;
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-text);
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background: var(--color-background);
+            padding: 0.75rem 2rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .breadcrumb-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .breadcrumb ol {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb li:not(:last-child)::after {
+            content: '›';
+            margin-left: 0.5rem;
+            color: var(--color-text-light);
+        }
+        
+        .breadcrumb a {
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--color-primary);
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .content-section {
+            background: var(--color-surface);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .content-section:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: var(--color-text);
+        }
+        
+        a {
+            color: var(--color-accent);
+            transition: var(--transition);
+        }
+        
+        a:hover {
+            color: var(--color-primary);
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid var(--color-border);
+            margin: 2.5rem 0;
+            opacity: 0.5;
+        }
+        
+        strong {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        
+        em {
+            font-style: italic;
+            color: var(--color-text-light);
+        }
+        
+        /* Image Sections */
+        .image-section {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .image-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .image-section:hover img {
+            transform: scale(1.02);
+        }
+        
+        /* Video Embed */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* 360 Tour */
+        .tour-wrapper {
+            position: relative;
+            padding-bottom: 75%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .tour-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        /* Grid Sections */
+        .grid-3col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .grid-item {
+            background: var(--color-background);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .grid-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .grid-item-content {
+            padding: 1.5rem;
+        }
+        
+        .grid-item-content p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .read-more {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            gap: 0.5rem;
+        }
+        
+        /* Sidebar/Footer Section */
+        .footer-info {
+            background: var(--color-primary);
+            color: white;
+            padding: 3rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+        
+        .footer-box {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-box h3 {
+            color: var(--color-secondary);
+            font-family: var(--font-heading);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-box p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-box a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+        
+        .footer-box a:hover {
+            color: var(--color-secondary);
+        }
+        
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Footer Meta Links */
+        .site-footer {
+            background: #1a1a1a;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            max-width: 1400px;
+            margin: 0 auto 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-secondary);
+        }
+        
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--color-accent);
+            transform: translateY(-4px);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu.mobile-active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--color-surface);
+                box-shadow: var(--shadow-lg);
+                padding: 1rem;
+                gap: 0.5rem;
+            }
+            
+            .dropdown {
+                position: static;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                max-height: none;
+                margin-top: 0.5rem;
+            }
+            
+            .grid-3col {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 2rem 1rem;
+            }
+            
+            .content-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .grid-3col {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-container {
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content-section {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="https://image.jimcdn.com/app/cms/image/transf/none/path/s0e830d437747bf20/image/i33c80a3ade8bea5a/version/1480147776/image.png" alt="LMG Logo" class="logo-image">
+            </div>
+            
+            <nav class="main-nav">
+                <button class="mobile-menu-toggle" aria-label="Menu">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="/" class="active">Start</a></li>
+                    <li>
+                        <a href="/aktuelles-1/">Aktuelles</a>
+                        <div class="dropdown">
+                            <ul>
+                                <li><a href="/aktuelles-1/das-passiert-bei-uns-gerade/">Das passiert bei uns gerade</a></li>
+                                <li><a href="/aktuelles-1/projektkurs-schulzeitung/">Projektkurs Schulzeitung</a></li>
+                                <li><a href="/aktuelles-1/terminkalender/">Terminkalender</a></li>
+                                <li><a href="/aktuelles-1/archiv-1/">Archiv</a></li>
+                                <li><a href="/aktuelles-1/lmg-hoodies-t-shirts/">LMG Hoodies & T-Shirts</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/profil/">Profil</a>
+                        <div class="dropdown">
+                            <ul>
+                                <li><a href="/profil/montessori-plus/">Montessori plus</a></li>
+                                <li><a href="/profil/erprobungsstufe/">Erprobungsstufe</a></li>
+                                <li><a href="/profil/individuelle-förderung/">Individuelle Förderung</a></li>
+                                <li>
+                                    <a href="/profil/talentförderung/">Talentförderung</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/profil/talentförderung/erfahrungsberichte/">Erfahrungsberichte</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="/profil/international/">International</a></li>
+                                <li><a href="/profil/beratung/">Beratung</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/unser-team/">Unser Team</a>
+                        <div class="dropdown">
+                            <ul>
+                                <li>
+                                    <a href="/unser-team/schülerinnen-schüler/">Schülerinnen & Schüler</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/unser-team/schülerinnen-schüler/sv/">SV</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="/unser-team/eltern/">Eltern</a></li>
+                                <li><a href="/unser-team/kollegium/">Kollegium</a></li>
+                                <li><a href="/unser-team/schulsozialarbeit/">Schulsozialarbeit</a></li>
+                                <li><a href="/unser-team/schulleitung/">Schulleitung</a></li>
+                                <li><a href="/unser-team/sekretariat/">Sekretariat</a></li>
+                                <li><a href="/unser-team/slz/">SLZ</a></li>
+                                <li><a href="/unser-team/hausmeister/">Hausmeister</a></li>
+                                <li><a href="/unser-team/ansprechpartner-innen/">Ansprechpartner*innen</a></li>
+                                <li><a href="/unser-team/lehrer-innenausbildung/">Lehrer*innenausbildung</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/unterricht/">Unterricht</a>
+                        <div class="dropdown">
+                            <ul>
+                                <li>
+                                    <a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/">Aufgabenfeld I</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/deutsch/">Deutsch</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/englisch/">Englisch</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/französisch/">Französisch</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/latein/">Latein</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/neugriechisch/">Neugriechisch</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/italienisch/">Italienisch</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/kunst/">Kunst</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/musik/">Musik</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="/unterricht/aufgabenfeld-ii-gesellschaftswissenschaftlich/">Aufgabenfeld II</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/unterricht/aufgabenfeld-ii-gesellschaftswissenschaftlich/erdkunde-geographie/">Erdkunde/Geographie</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-ii-gesellschaftswissenschaftlich/geschichte/">Geschichte</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-ii-gesellschaftswissenschaftlich/pädagogik/">Pädagogik</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-ii-gesellschaftswissenschaftlich/philosophie/">Philosophie</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-ii-gesellschaftswissenschaftlich/politik-sozialwissenschaften/">Politik/Sozialwissenschaften</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="/unterricht/aufgabenfeld-iii-mathematisch-naturwissenschaftlich-technisch/">Aufgabenfeld III</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/unterricht/aufgabenfeld-iii-mathematisch-naturwissenschaftlich-technisch/mathematik/">Mathematik</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-iii-mathematisch-naturwissenschaftlich-technisch/biologie/">Biologie</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-iii-mathematisch-naturwissenschaftlich-technisch/chemie/">Chemie</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-iii-mathematisch-naturwissenschaftlich-technisch/physik/">Physik</a></li>
+                                            <li><a href="/unterricht/aufgabenfeld-iii-mathematisch-naturwissenschaftlich-technisch/informatik/">Informatik</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="/unterricht/sonstige-fächer/">Sonstige Fächer</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/unterricht/sonstige-fächer/religionslehre-evangelisch-katholisch-orthodox/">Religionslehre</a></li>
+                                            <li><a href="/unterricht/sonstige-fächer/sport/">Sport</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="/unterricht/differenzierungsbereich/">Differenzierungsbereich</a>
+                                    <div class="dropdown">
+                                        <ul>
+                                            <li><a href="/unterricht/differenzierungsbereich/italienisch/">Italienisch</a></li>
+                                            <li><a href="/unterricht/differenzierungsbereich/politik-wirtschaft/">Politik/Wirtschaft</a></li>
+                                            <li><a href="/unterricht/differenzierungsbereich/naturwissenschaften/">Naturwissenschaften</a></li>
+                                            <li><a href="/unterricht/differenzierungsbereich/informatik/">Informatik</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="/förderverein-1/">Förderverein</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+                <li itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                    <a href="/" itemprop="item"><span itemprop="name">Start</span></a>
+                    <meta itemprop="position" content="1"/>
+                </li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="content-section">
+            <h1>Herzlich willkommen auf unseren Webseiten!</h1>
+            <p>
+                Haben Sie Fragen oder Anmerkungen zu unserem Internetauftritt? Schreiben Sie gerne eine Mail an unser Team Öffentlichkeitsarbeit!
+            </p>
+        </div>
+
+        <div class="content-section">
+            <p><strong style="font-size: 16px;">Informationsabend für Eltern von Viertklässler:Innen</strong></p>
+            <p>Dienstag, 27. Januar 2026 von 19.00 - 21.00 Uhr in der Mensa</p>
+            
+            <hr>
+            
+            <p><strong style="font-size: 16px;">Anmeldungen für das Schuljahr 2026/2027</strong></p>
+            <p>(Terminvergabe ab Januar 2026 - Link wird Mitte Januar auf der Webseite zu finden sein)</p>
+            <p><em>Montag, 09.02.2026, 09:00 – 12:00 Uhr und 15:00 – 18:00 Uhr</em></p>
+            <p><em>Dienstag, 10.02.2026, 09:00 – 12:00 Uhr und 15:00 – 18:00 Uhr</em></p>
+            <p><em>Mittwoch, 11.02.2026, 09:00 – 12:00 Uhr</em></p>
+        </div>
+
+        <div class="content-section">
+            <h1>Bücher und Lernmittel für das Schuljahr 2025/26</h1>
+            <p>
+                <a href="http://www.schulen.duesseldorf.de/gy-scharnhorststr/aktuelles/Buecher_Lernmittel/2025_Elternbrief_Eigenanteil_Buecher.pdf" target="_blank">Hier</a> findet sich die <a href="http://www.schulen.duesseldorf.de/gy-scharnhorststr/aktuelles/Buecher_Lernmittel/2025_Elternbrief_Eigenanteil_Buecher.pdf" target="_blank">Liste mit den anzuschaffenden Büchern und Lernmitteln für das Schuljahr 2025/26, sortiert nach Jahrgängen (pro Jahrgang eine Seite).</a>
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h1>Logineo NRW</h1>
+            <p>Liebe Schüler*innen,</p>
+            <p>
+                für alle hier nochmal der Pfad zu unserer Lernplattform <a href="https://164471.logineonrw-lms.de/login/index.php" target="_blank">LogineoNRW LMS.</a> und zum Mailprogramm Logineo NRW: <a href="http://leibniz-montessori.nrw.schule" target="_blank">leibniz-montessori.nrw.schule</a>.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h1>Abitur 2025</h1>
+            <div class="image-section">
+                <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=1108x1024:format=jpg/path/s0e830d437747bf20/image/i7ca7ef798c73fd45/version/1756103967/image.jpg" alt="Abitur 2025">
+            </div>
+            
+            <p>Am 04.07.2025 erhielten 90 Abiturientinnen und Abiturienten in einer großen Feier in der Aula des Leibniz-Montessori-Gymnasiums ihre Abiturzeugnisse.</p>
+            
+            <p>Umrahmt wurde die festliche Veranstaltung von toller Musik des StreichEnsembles des LMG-Orchesters, einem Jazz-Trio der Q2 und der Band Mental River.</p>
+            
+            <p>Nach der Eröffnungsrede der Schulleiterin, Frau Lehmann, ließ die Jahrgangsstufenleitung, Frau Brackmann und Herr Kallenbach, in ihrer Rede die letzten drei Jahre Oberstufe bis zum Abitur 2025 Revue passieren. Nach einem Grußwort von Herrn Sat aus der Elternvertretung konnten die lang ersehnten Abiturzeugnisse endlich von den Abiturientinnen und Abiturienten aus der Hand von Frau Lehmann in Empfang genommen werden. Abgerundet wurde die feierliche Abiturzeugnisvergabe durch die Ansprache von Mayu Kluth und Lotte Mia Slomke für die Abiturientia 2025.</p>
+            
+            <p>Alle Kolleginnen und Kollegen sowie Mitarbeiterinnen und Mitarbeiter des LMG wünschen unseren jetzt ehemaligen Schülerinnen und Schülern das Beste für ihren weiteren Lebensweg und hoffen, den einen oder die andere mal wieder bei uns am Leibniz-Montessori-Gymnasium begrüßen zu dürfen.</p>
+            
+            <p>Jill Brackmann und Stefan Kallenbach</p>
+        </div>
+
+        <div class="content-section">
+            <h1>Erklärfilmwettbewerb</h1>
+            <p><strong style="font-size: 15px;">Der Chemiekurs unseres EF-Jahrgangs hat einen Erklärfilm erstellt und nimmt damit an einem Wettbewerb des <a href="https://medien-und-bildung.lvr.de/de/medialab_1/medialab_4.html" target="_blank">LVR-Zentrum für Medien und Bildung Düsseldorf</a> teil! Wir sind gespannt auf das Ergebnis und drücken die Daumen!</strong></p>
+            
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube-nocookie.com/embed/mJ9NHprwKjE?wmode=transparent&vq=hd1080" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h1>Ganz neu: Die LMG-Kollektion</h1>
+            <p>Wir haben endlich eine eigene Schulkollektion aus Hoodies und T-Shirts - besucht unseren <a href="/aktuelles-1/lmg-hoodies-t-shirts/">Webshop!</a></p>
+        </div>
+
+        <div class="content-section">
+            <h1>Neu am LMG: MindOut</h1>
+            <p>Seit März 2025 nehmen wir am MindOut-Programm teil, einem Programm zur Stärkung des sozialen und emotionalen Wohlbefindens von Jugendlichen <a href="/begabtenförderung/mindout/">- mehr lesen...</a></p>
+        </div>
+
+        <div class="content-section">
+            <h1>Zentralkurse Italienisch</h1>
+            <p>Der Unterricht für die Zentralkurse Italienisch beginnt in der zweiten Schulwoche, also ab dem 01.09.2025. Zu Schuljahresbeginn findet ihr hier <a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/italienisch-zentralkurse/">alle Informationen zu den Italienisch-Kursen!</a> Ein Raumplan wird im Gebäude aushängen.</p>
+        </div>
+
+        <div class="content-section">
+            <h1>Ein kleiner 360°-Rundgang</h1>
+            <div class="tour-wrapper">
+                <iframe src="https://preview360.de/VR/Leibniz-Montessori/index.htm" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Grid Section -->
+        <div class="grid-3col">
+            <div class="grid-item">
+                <a href="/aktuelles-1/das-passiert-bei-uns-gerade/">
+                    <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=323x10000:format=jpg/path/s0e830d437747bf20/image/ic24cf0db75de2ebb/version/1481720212/image.jpg" alt="Das passiert bei uns gerade">
+                </a>
+                <div class="grid-item-content">
+                    <p style="text-align: justify;">Erfahren Sie aktuelle Ereignisse aus dem Alltag in der Schule sowie weitere Aktivitäten von Schülern, Eltern und Kollegium.</p>
+                    <a href="/aktuelles-1/das-passiert-bei-uns-gerade/" class="read-more">&gt;&gt; mehr lesen…</a>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <a href="/aktuelles-1/terminkalender/">
+                    <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=278x10000:format=jpg/path/s0e830d437747bf20/image/i1c6060ad61afd70f/version/1668694132/image.jpg" alt="Terminkalender">
+                </a>
+                <div class="grid-item-content">
+                    <p>Hier finden Sie die wichtigsten Termine aus dem Schulleben im praktischen Monatsüberblick.</p>
+                    <a href="/aktuelles-1/terminkalender/" class="read-more">&gt;&gt; mehr lesen…</a>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <a href="/begabtenförderung/mensa/">
+                    <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=323x10000:format=jpg/path/s0e830d437747bf20/image/ib0b9369eaee4d5c5/version/1476820648/image.jpg" alt="Mensa">
+                </a>
+                <div class="grid-item-content">
+                    <p>Was gibt es heute zu essen? Wie bestelle ich mein Mittagessen? (<a href="https://schulverpflegung-duesseldorf.webmenue.info/" target="_blank">hier: direkt zu Webmenü</a>) Alle wichtigen Informationen hier!</p>
+                    <a href="/begabtenförderung/mensa/" class="read-more">&gt;&gt; mehr lesen…</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-3col">
+            <div class="grid-item">
+                <a href="/aktuelles-1/preise-auszeichnungen/">
+                    <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=323x10000:format=jpg/path/s0e830d437747bf20/image/iae5a3f24e876c0e0/version/1481720233/image.jpg" alt="Preise & Auszeichnungen">
+                </a>
+                <div class="grid-item-content">
+                    <p>&nbsp;</p>
+                    <a href="/aktuelles-1/preise-auszeichnungen/" class="read-more">&gt;&gt; mehr lesen…</a>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <a href="/begabtenförderung/sprachen/">
+                    <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=278x10000:format=jpg/path/s0e830d437747bf20/image/idf3af4251c267c1f/version/1504269764/image.jpg" alt="Sprachen">
+                </a>
+                <div class="grid-item-content">
+                    <p>Wir sind Stützpunktschule für die <a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/italienisch-zentralkurse/">Zentralkurse in Italienisch</a> sowie Jüdische Religionslehre und bieten <a href="/unterricht/aufgabenfeld-i-sprachlich-literarisch-künstlerisch/neugriechisch-bilingual/">Neugriechisch bilingual</a> an!</p>
+                    <a href="/begabtenförderung/sprachen/" class="read-more">&gt;&gt; mehr lesen…</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" style="text-align: center;">
+            <p>Folge uns auf Instagram 
+                <a href="http://instagram.com/leibnizmontessorigymnasium" target="_blank">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAE6ElEQVRYhd2Zz0syTxzHV0gN9qYglYKFkqKH9tpBRXQryhQxKX+0J6F8DrJerFMeA1czQyshOmvSv9DBQ9hFoVvHCKJzYAoG+z3YM898Z3Xa9UkPz/s2n/l89vNyZnb2MyPBY9VoNDiOC4VCNpvNarXq9Xq1Wk2SpFKplMlkBFYymUypVJIkqVar9Xq91Wq12+2hUCibzTYaDXxeYqD1+fl5fX0dn/Xv5fF4Xl5exGLRND1uIFhra2vfYL2/v08SCFa73R6MhWeyWq1utzsQCMRiMZZlU6nU4W+l0+kjSOl0GnSlUimWZWOxWCAQcLvdFotFJNkfLKGfUqkslUqfn58Dp39k9Xq9YrEol8uFGVEs4XrK5XI/SyNUJpNBkm5sbPzBen5+Rrrv7+/HzdRXvV5HUr++vn5hIXvBWMfp8fHx5uam2+0CC8dxcHafz/eFBVunp6fHx0RRFEh0fX0N7Mg643meaDQasOn8/HxMTCcnJ8h89Xq9flehUIDtzWaTyGazsOnH3zsgu92OYNVqtX5Xt9uF7RzHEaFQCBlASapUKqFQyGQyqVQqlUplMpnC4XC1WhV67u3tIVhPT0+gF7bv7u4SNpsNtC0Wi3igQCBAYBUMBpEQuHd5eRnuMpvNoIumacJqtYK22+0WA1QsFvFAsC4uLuDYX79+0TRdKpWQZzqdThCytLRE6PV60A4EAt8yjVBZeL3ebx/r9XqBv16vJ9RqNWjHYrHRmHQ6ncvlcrlcWq12oEN/N8KIYRjgrFarCZIkQZtlWUzkwLkrFApCz3w+L/Qsl8uYh8fjceBJkiShUChAO5VKYSKRNIuLi/gBMBqNSAjGOZFIADeFQkHAte/h4eGwMOS9M5lMeKa+DAYDHLWzszPMM5lMAje0HMdgif/dowXCWKiGYVUqFdjt7OxMPFYul4Njwc4uASudTg+MCYfDow1VX3BsJBIZ6HNwcDAU6+joaGCMyWQCPjqdTirW7OwsCF9aWvoxLJVKBXxcLpdULIfDAcI1Gs2/jgVPolarlYo1MzMDwimKkow1bMlHIhHYTSoWHBuNRiVjDdsgqtUq7JbP58UzIaX67e3tQDeWZSVj8ZPfTkV+fILBIBxlNBrFMC0sLMBR4XBYDJZMJhv9U20wGCQx4ccY/VSLL2wuLy8JgQYeKpH11NfV1RXm4fv7+8CTJElpZSBcQ8Cam5tzOBwOhwPe0GFtbW3hn4yWgVKLZp/PNzAxRt8y8cKieYQjRrlcFs+Enzsg9IgBnyolHci2t7fxQJj3Tij4QLayskL8ZdFSq9UikQhFURqNRqPRUBQVjUaH7ZkYwQwMw6CHfXAvMEl1Oh2YIZvNEg8PD7CpWCxOHuv09BRmaLVa6EWSXC6fPNbU1BSykAie5z0eD2zNZDKTZDo+Poaz+/3+L6yXlxfkJarX65Nhuru7Q1K/vb3x4Ep3dXUV6eY4btxMyDgRBLG5udnvwl2Ay+XyQqEA33P+iDqdTj6fR9YTWFUoVrvdFvoBmc1mp9Pp8/kYhonH44lEIplMJpNJlmUPBEr+ViKRiMfjDMP4fD6n0wnvmULBv/9/++fHxwcmbKxC5mTAtj6B/8ZggfX0DRbP86+vryNUClLl9/v7751YLKBms8lxHMMwNE1TFDXy35zz8/MURdE0zTBMNptttVr4vP8BA7/T5rO2YBUAAAAASUVORK5CYIIA" alt="Instagram" style="width: 50px; height: auto; margin-top: 1rem;">
+                </a>
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer Info Section -->
+    <section class="footer-info">
+        <div class="footer-container">
+            <div class="footer-box">
+                <h3>Kontakt</h3>
+                <p><strong>Leibniz-Montessori-Gymnasium</strong></p>
+                <p>Scharnhorststraße 8<br>
+                40477 Düsseldorf<br>
+                Tel.: +49 211 89 27 806, +49 211 89 27 811<br>
+                Fax: +49 211 89 27 810</p>
+                <p>E-Mail: <a href="mailto:sekretariat@leibniz-montessori.nrw.schule">sekretariat@leibniz-montessori.nrw.schule</a></p>
+            </div>
+
+            <div class="footer-box">
+                <h3>Öffnungszeiten Sekretariat</h3>
+                <p>Montag, Mittwoch, Donnerstag:<br>8.00 bis 15.30 Uhr</p>
+                <p>Dienstag, Freitag:<br>8.00 bis 13.00 Uhr</p>
+            </div>
+
+            <div class="footer-box">
+                <h3>Partnerschulen</h3>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://image.jimcdn.com/app/cms/image/transf/none/path/s0e830d437747bf20/image/i097f3acc16fd9425/version/1686320512/image.jpg" alt="Partner 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://image.jimcdn.com/app/cms/image/transf/none/path/s0e830d437747bf20/image/i4f9093a9854421c1/version/1686320512/image.png" alt="Partner 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://image.jimcdn.com/app/cms/image/transf/none/path/s0e830d437747bf20/image/ife330eb9c35313a2/version/1686320512/image.jpg" alt="Partner 3">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=1920x400:format=png/path/s0e830d437747bf20/image/i3fc834b2fe2a58e0/version/1686320512/image.png" alt="Partner 4">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://image.jimcdn.com/app/cms/image/transf/dimension=1920x400:format=jpg/path/s0e830d437747bf20/image/ie5e76a2cd81da4f7/version/1686320525/image.jpg" alt="Partner 5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="/about/">Impressum</a> | 
+            <a href="//www.leibniz-montessori.de/j/privacy">Datenschutz</a> | 
+            <a href="javascript:void(0);" id="cookie-policy">Cookie-Richtlinie</a> | 
+            <a href="/sitemap/">Sitemap</a>
+        </div>
+        <div class="footer-links">
+            <span class="loggedout">
+                <a rel="nofollow" href="/login">Anmelden</a>
+            </span>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop" aria-label="Nach oben scrollen">↑</button>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('mobile-active');
+            });
+        }
+        
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== 'javascript:void(0);') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Close dropdowns on click outside (for mobile)
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-menu') && !e.target.closest('.mobile-menu-toggle')) {
+                navMenu.classList.remove('mobile-active');
+            }
+        });
+        
+        // Header shadow on scroll
+        const header = document.querySelector('.site-header');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 50) {
+                header.style.boxShadow = 'var(--shadow-md)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
