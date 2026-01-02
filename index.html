@@ -278,7 +278,7 @@ body.dark-mode {
 }
 
 body.dark-mode .jtpl-background-area {
-    opacity: 0.15 !important;
+    opacity: 0.85 !important;
 }
 
 body.dark-mode .jtpl-main,
@@ -1122,7 +1122,7 @@ addAutomatedTracking('creator.website', track_anon);
     position: absolute;
     font-family: 'Georgia', serif;
     font-style: italic;
-    color: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.25);
     white-space: nowrap;
     opacity: 0;
 }
@@ -1187,6 +1187,7 @@ body.dark-mode .jqbga-slider--image img {
     ];
     
     function initFloatingQuotes() {
+        // Wait for splash screen to fade out (3000ms splash + 800ms fade)
         setTimeout(function() {
             const container = document.createElement('div');
             container.className = 'floating-quotes-container';
@@ -1227,15 +1228,16 @@ body.dark-mode .jqbga-slider--image img {
                 const fontSize = 1.2 + Math.random() * 1.0;
                 quoteElement.style.fontSize = fontSize + 'rem';
                 
-                // Random opacity
-                const baseOpacity = 0.06 + Math.random() * 0.04;
+                // Higher opacity for better readability
+                const baseOpacity = 0.15 + Math.random() * 0.10;
                 const isDark = document.body.classList.contains('dark-mode');
                 quoteElement.style.color = isDark 
                     ? `rgba(255, 255, 255, ${baseOpacity})` 
-                    : `rgba(0, 0, 0, ${baseOpacity})`;
+                    : `rgba(0, 0, 0, ${baseOpacity + 0.10})`;
                 
-                // Random vertical position
-                const yPos = 10 + Math.random() * 80;
+                // RESTRICTED vertical position - only in upper half where red boxes are
+                // Red boxes appear roughly from 5% to 45% of viewport height
+                const yPos = 5 + Math.random() * 40;
                 quoteElement.style.top = yPos + '%';
                 
                 // Choose random sidebar (left or right)
@@ -1302,7 +1304,7 @@ body.dark-mode .jqbga-slider--image img {
             
             scheduleNextQuote();
             
-        }, 3200);
+        }, 3800);
     }
     
     if (document.readyState === 'loading') {
