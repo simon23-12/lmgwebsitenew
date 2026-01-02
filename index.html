@@ -1106,7 +1106,7 @@ addAutomatedTracking('creator.website', track_anon);
 </script>
 
 <style type="text/css">
-/* FLOATING BACKGROUND QUOTES */
+/* FLOATING BACKGROUND QUOTES - HORIZONTAL ONLY */
 .floating-quotes-container {
     position: fixed;
     top: 0;
@@ -1121,11 +1121,9 @@ addAutomatedTracking('creator.website', track_anon);
 .floating-quote {
     position: absolute;
     font-family: 'Georgia', serif;
-    font-size: 1.8rem;
     font-style: italic;
     color: rgba(0, 0, 0, 0.08);
     white-space: nowrap;
-    animation: floatAcross 25s linear;
     opacity: 0;
 }
 
@@ -1133,39 +1131,19 @@ body.dark-mode .floating-quote {
     color: rgba(255, 255, 255, 0.05);
 }
 
-@keyframes floatAcross {
-    0% {
-        opacity: 0;
-    }
-    5% {
-        opacity: 1;
-    }
-    95% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+/* FIX: Dark Mode Header Banner */
+body.dark-mode .jtpl-header {
+    background-color: transparent !important;
 }
 
-@keyframes floatAcrossReverse {
-    0% {
-        opacity: 0;
-    }
-    5% {
-        opacity: 1;
-    }
-    95% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+body.dark-mode .jqbga-slider,
+body.dark-mode .jqbga-slider--image {
+    opacity: 0.2 !important;
 }
 
 @media (max-width: 768px) {
     .floating-quote {
-        font-size: 1.2rem;
+        font-size: 1rem !important;
     }
 }
 </style>
@@ -1181,11 +1159,14 @@ body.dark-mode .floating-quote {
         "Erziehung ist eine Hilfe zum Leben.",
         "Das Spiel ist die Arbeit des Kindes.",
         "Der größte Erfolg der Erziehung ist nicht Wissen, sondern Begeisterung.",
-        "Jedes unnötige Helfen ist ein Hindernis für die Entwicklung."
+        "Jedes unnötige Helfen ist ein Hindernis für die Entwicklung.",
+        "Bildung ist nicht das Befüllen von Fässern, sondern das Entzünden von Flammen.",
+        "Das Kind muss nicht lernen zu wollen, sondern wollen zu können.",
+        "Wenn wir mit Kindern umgehen, müssen wir wie Wissenschaftler sein.",
+        "Die erste Aufgabe der Erziehung ist es, dem Kind Unabhängigkeit zu ermöglichen."
     ];
     
     function initFloatingQuotes() {
-        // Wait for splash screen to finish
         setTimeout(function() {
             const container = document.createElement('div');
             container.className = 'floating-quotes-container';
@@ -1197,49 +1178,71 @@ body.dark-mode .floating-quote {
                 quoteElement.className = 'floating-quote';
                 quoteElement.textContent = quote;
                 
-                // Random vertical position (15% to 85% of viewport height)
-                const randomTop = 15 + Math.random() * 70;
-                quoteElement.style.top = randomTop + '%';
+                // Random size for depth effect (1.2rem to 2.2rem)
+                const fontSize = 1.2 + Math.random() * 1.0;
+                quoteElement.style.fontSize = fontSize + 'rem';
+                
+                // Random opacity for more depth variation
+                const baseOpacity = 0.06 + Math.random() * 0.04; // 0.06 to 0.10
+                const isDark = document.body.classList.contains('dark-mode');
+                quoteElement.style.color = isDark 
+                    ? `rgba(255, 255, 255, ${baseOpacity})` 
+                    : `rgba(0, 0, 0, ${baseOpacity})`;
+                
+                // Random vertical position (FIXED - no movement)
+                const yPos = 10 + Math.random() * 80; // 10-90% height
+                quoteElement.style.top = yPos + '%';
                 
                 // Random direction (left to right or right to left)
-                const direction = Math.random() > 0.5 ? 'ltr' : 'rtl';
+                const direction = Math.random() > 0.5;
                 
-                if (direction === 'ltr') {
+                // Random duration based on size (smaller = faster for depth effect)
+                const duration = 15 + (fontSize - 1.2) * 10; // 15-25 seconds
+                
+                if (direction) {
+                    // Left to right
                     quoteElement.style.left = '-100%';
-                    quoteElement.style.animation = 'floatAcross 25s linear';
-                    quoteElement.style.animationFillMode = 'forwards';
-                    
-                    // Animate from left to right
-                    setTimeout(function() {
-                        quoteElement.style.transition = 'left 25s linear';
-                        quoteElement.style.left = '100%';
-                    }, 50);
+                    quoteElement.style.transform = 'translateX(0)';
                 } else {
+                    // Right to left
                     quoteElement.style.right = '-100%';
-                    quoteElement.style.animation = 'floatAcrossReverse 25s linear';
-                    quoteElement.style.animationFillMode = 'forwards';
-                    
-                    // Animate from right to left
-                    setTimeout(function() {
-                        quoteElement.style.transition = 'right 25s linear';
-                        quoteElement.style.right = '100%';
-                    }, 50);
+                    quoteElement.style.transform = 'translateX(0)';
                 }
                 
                 container.appendChild(quoteElement);
                 
-                // Remove after animation completes
+                // Animate
+                setTimeout(function() {
+                    if (direction) {
+                        quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, left ${duration}s linear`;
+                        quoteElement.style.opacity = '1';
+                        quoteElement.style.left = '100%';
+                    } else {
+                        quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, right ${duration}s linear`;
+                        quoteElement.style.opacity = '1';
+                        quoteElement.style.right = '100%';
+                    }
+                }, 50);
+                
+                // Fade out before end
+                setTimeout(function() {
+                    quoteElement.style.transition += `, opacity ${duration * 0.15}s ease-in`;
+                    quoteElement.style.opacity = '0';
+                }, duration * 850);
+                
+                // Remove element
                 setTimeout(function() {
                     quoteElement.remove();
-                }, 25000);
+                }, duration * 1000);
             }
             
-            // Create first quote immediately
+            // Create first 2 quotes immediately with delay
             createFloatingQuote();
+            setTimeout(createFloatingQuote, 3000);
             
-            // Create new quote every 8-15 seconds (random interval)
+            // Create new quote every 4-8 seconds
             function scheduleNextQuote() {
-                const delay = 8000 + Math.random() * 7000; // 8-15 seconds
+                const delay = 4000 + Math.random() * 4000; // 4-8 seconds
                 setTimeout(function() {
                     createFloatingQuote();
                     scheduleNextQuote();
@@ -1248,7 +1251,7 @@ body.dark-mode .floating-quote {
             
             scheduleNextQuote();
             
-        }, 3500); // Wait for splash screen + 500ms
+        }, 3500);
     }
     
     if (document.readyState === 'loading') {
