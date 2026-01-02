@@ -1035,6 +1035,11 @@ addAutomatedTracking('creator.website', track_anon);
     let leftContainer, rightContainer;
     let initialized = false;
     
+    // Track occupied Y positions to prevent overlapping
+    // Each entry: { yPos: number, expiresAt: timestamp }
+    let leftOccupiedSlots = [];
+    let rightOccupiedSlots = [];
+    
     function getContentBounds() {
         const mainContent = document.querySelector('.jtpl-main') || document.querySelector('.layout-alignment');
         if (mainContent) {
@@ -1058,6 +1063,47 @@ addAutomatedTracking('creator.website', track_anon);
         }
     }
     
+    // Clean up expired slots
+    function cleanupSlots() {
+        const now = Date.now();
+        leftOccupiedSlots = leftOccupiedSlots.filter(slot => slot.expiresAt > now);
+        rightOccupiedSlots = rightOccupiedSlots.filter(slot => slot.expiresAt > now);
+    }
+    
+    // Check if a Y position is available (no overlap within 12% range)
+    function isPositionAvailable(yPos, slots) {
+        const minDistance = 12; // Minimum 12% distance between quotes
+        for (const slot of slots) {
+            if (Math.abs(slot.yPos - yPos) < minDistance) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    // Find an available Y position
+    function findAvailablePosition(slots) {
+        cleanupSlots();
+        
+        // Try up to 20 random positions
+        for (let i = 0; i < 20; i++) {
+            const yPos = 8 + Math.random() * 80; // 8% to 88%
+            if (isPositionAvailable(yPos, slots)) {
+                return yPos;
+            }
+        }
+        
+        // If no random position works, try systematic positions
+        for (let yPos = 10; yPos <= 85; yPos += 15) {
+            if (isPositionAvailable(yPos, slots)) {
+                return yPos;
+            }
+        }
+        
+        // No position available
+        return null;
+    }
+    
     function createFloatingQuote() {
         const bounds = getContentBounds();
         const leftSidebarWidth = bounds.left;
@@ -1068,60 +1114,92 @@ addAutomatedTracking('creator.website', track_anon);
             return;
         }
         
+        // Choose sidebar
+        let useLeft;
+        if (leftSidebarWidth < 50) {
+            useLeft = false;
+        } else if (rightSidebarWidth < 50) {
+            useLeft = true;
+        } else {
+            useLeft = Math.random() > 0.5;
+        }
+        
+        const targetSlots = useLeft ? leftOccupiedSlots : rightOccupiedSlots;
+        
+        // Find available Y position
+        const yPos = findAvailablePosition(targetSlots);
+        if (yPos === null) {
+            // No space available, skip this quote
+            return;
+        }
+        
         const quote = quotes[Math.floor(Math.random() * quotes.length)];
         const quoteElement = document.createElement('div');
         quoteElement.className = 'floating-quote';
         quoteElement.textContent = quote;
         
         // Random size
-        const fontSize = 1.1 + Math.random() * 0.8;
+        const fontSize = 1.1 + Math.random() * 0.7;
         quoteElement.style.fontSize = fontSize + 'rem';
         
         // Random opacity
-        const opacity = 0.25 + Math.random() * 0.20;
+        const opacity = 0.28 + Math.random() * 0.17;
         quoteElement.style.color = `rgba(0, 0, 0, ${opacity})`;
         
-        // Random Y position
-        const yPos = 5 + Math.random() * 85;
+        // Set Y position
         quoteElement.style.top = yPos + '%';
         
-        // Choose sidebar and set up animation
-        const useLeft = Math.random() > 0.5;
-        const duration = 30 + Math.random() * 20; // 30-50 seconds
+        // FIXED duration - always moves, never zero speed
+        // Duration between 25-40 seconds (guaranteed movement)
+        const duration = 25 + Math.random() * 15;
         
-        if (useLeft && leftSidebarWidth > 50) {
-            // Left sidebar - text enters from left, moves right within the left container
-            quoteElement.style.right = '100%'; // Start off-screen to the left (within container)
+        // Reserve this slot for the duration of the animation
+        const slotEntry = { yPos: yPos, expiresAt: Date.now() + (duration * 1000) };
+        targetSlots.push(slotEntry);
+        
+        if (useLeft) {
+            // Left sidebar - starts from left edge, moves right
+            quoteElement.style.transform = 'translateX(-100%)';
+            quoteElement.style.left = '0';
             leftContainer.appendChild(quoteElement);
             
-            requestAnimationFrame(() => {
-                quoteElement.style.opacity = '1';
-                quoteElement.style.transition = `opacity 0.5s ease-out, right ${duration}s linear`;
-                quoteElement.style.right = '0%'; // Move to right edge of left container
-            });
-        } else if (rightSidebarWidth > 50) {
-            // Right sidebar - text enters from right, moves left within the right container
-            quoteElement.style.left = '100%'; // Start off-screen to the right (within container)
-            rightContainer.appendChild(quoteElement);
+            // Force reflow then start animation
+            quoteElement.offsetHeight;
             
             requestAnimationFrame(() => {
-                quoteElement.style.opacity = '1';
-                quoteElement.style.transition = `opacity 0.5s ease-out, left ${duration}s linear`;
-                quoteElement.style.left = '0%'; // Move to left edge of right container
+                requestAnimationFrame(() => {
+                    quoteElement.style.opacity = '1';
+                    quoteElement.style.transition = `opacity 0.8s ease-out, transform ${duration}s linear`;
+                    quoteElement.style.transform = 'translateX(100%)';
+                });
             });
         } else {
-            return;
+            // Right sidebar - starts from right edge, moves left
+            quoteElement.style.transform = 'translateX(100%)';
+            quoteElement.style.right = '0';
+            rightContainer.appendChild(quoteElement);
+            
+            // Force reflow then start animation
+            quoteElement.offsetHeight;
+            
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    quoteElement.style.opacity = '1';
+                    quoteElement.style.transition = `opacity 0.8s ease-out, transform ${duration}s linear`;
+                    quoteElement.style.transform = 'translateX(-100%)';
+                });
+            });
         }
         
         // Fade out near end
         setTimeout(() => {
             quoteElement.style.opacity = '0';
-        }, duration * 900);
+        }, duration * 850);
         
-        // Remove element
+        // Remove element after animation completes
         setTimeout(() => {
             quoteElement.remove();
-        }, duration * 1000 + 500);
+        }, duration * 1000 + 600);
     }
     
     function initFloatingQuotes() {
@@ -1144,13 +1222,14 @@ addAutomatedTracking('creator.website', track_anon);
         // Update widths on resize
         window.addEventListener('resize', updateContainerWidths);
         
-        // Create initial quotes immediately
+        // Create initial quotes with slight delay between them
         createFloatingQuote();
-        createFloatingQuote();
+        setTimeout(createFloatingQuote, 500);
+        setTimeout(createFloatingQuote, 1000);
         
-        // Schedule more quotes
+        // Schedule more quotes at regular intervals
         function scheduleNextQuote() {
-            const delay = 3000 + Math.random() * 4000; // 3-7 seconds
+            const delay = 4000 + Math.random() * 3000; // 4-7 seconds
             setTimeout(() => {
                 createFloatingQuote();
                 scheduleNextQuote();
@@ -1160,7 +1239,7 @@ addAutomatedTracking('creator.website', track_anon);
         scheduleNextQuote();
     }
     
-    // START IMMEDIATELY when DOM is ready - no waiting for splash
+    // START IMMEDIATELY when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initFloatingQuotes);
     } else {
