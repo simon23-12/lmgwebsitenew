@@ -172,14 +172,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     align-items: center;
     justify-content: center;
     z-index: 99999;
-    animation: fadeOut 0.8s ease 2.2s forwards;
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
+    transition: opacity 0.8s ease;
 }
 
 .welcome-splash img {
@@ -235,7 +228,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     }
 }
 
-/* DARK MODE TOGGLE - FIXED POSITION */
+/* DARK MODE TOGGLE */
 .dark-mode-toggle {
     position: fixed !important;
     top: 20px !important;
@@ -281,9 +274,8 @@ body.dark-mode {
 
 body.dark-mode .jtpl-main,
 body.dark-mode .jtpl-content,
-body.dark-mode .content-section,
-body.dark-mode .cc-m-hgrid,
-body.dark-mode .j-module {
+body.dark-mode .jtpl-section-main,
+body.dark-mode #content_area {
     background-color: #1a1a1a !important;
     color: #e0e0e0 !important;
 }
@@ -296,17 +288,13 @@ body.dark-mode strong {
 }
 
 body.dark-mode p,
-body.dark-mode span,
+body.dark-mode span:not(.icon),
 body.dark-mode div {
     color: #e0e0e0 !important;
 }
 
 body.dark-mode a {
     color: #ffa500 !important;
-}
-
-body.dark-mode a:hover {
-    color: #ff8c00 !important;
 }
 
 body.dark-mode .dark-mode-toggle {
@@ -317,7 +305,6 @@ body.dark-mode .dark-mode-toggle {
 
 body.dark-mode .jtpl-navigation {
     background-color: #2a2a2a !important;
-    border-bottom-color: #444 !important;
 }
 
 body.dark-mode .j-nav-level-1,
@@ -330,15 +317,6 @@ body.dark-mode .j-nav-level-2 a {
     color: #e0e0e0 !important;
 }
 
-body.dark-mode .jtpl-breadcrumbs {
-    background-color: #2a2a2a !important;
-}
-
-body.dark-mode .footer-info,
-body.dark-mode .site-footer {
-    background-color: #0a0a0a !important;
-}
-
 /* ELEGANT SECTION SEPARATORS */
 .j-module.j-hr {
     display: none !important;
@@ -348,7 +326,6 @@ body.dark-mode .site-footer {
     margin-top: 4rem !important;
     margin-bottom: 2rem !important;
     padding-top: 3rem !important;
-    border-top: none !important;
     position: relative !important;
 }
 
@@ -363,93 +340,19 @@ body.dark-mode .site-footer {
     border-radius: 2px !important;
 }
 
-.j-module.j-header h1 {
-    font-size: 2.5rem !important;
-    font-weight: 700 !important;
-    color: #333 !important;
-    margin: 0 !important;
-    letter-spacing: -0.02em !important;
-    line-height: 1.2 !important;
-}
-
 body.dark-mode .j-module.j-header::before {
     background: linear-gradient(90deg, #ffa500 0%, #ff8c00 50%, transparent 100%) !important;
-}
-
-body.dark-mode .j-module.j-header h1 {
-    color: #ffffff !important;
-}
-
-.j-module.j-text {
-    margin-bottom: 1.5rem !important;
-}
-
-.cc-m-hgrid {
-    margin-top: 3rem !important;
-    margin-bottom: 3rem !important;
 }
 
 @media (max-width: 768px) {
     .welcome-splash h1 {
         font-size: 1.8rem;
     }
-    
     .welcome-splash img {
         max-height: 200px;
     }
 }
 </style>
-
-<script>
-(function() {
-    // Create Welcome Splash Screen
-    const splash = document.createElement('div');
-    splash.className = 'welcome-splash';
-    splash.innerHTML = `
-        <img src="images/load.png" alt="LMG Logo">
-        <h1>Herzlich Willkommen auf der Seite des<br>Leibniz-Montessori-Gymnasiums Düsseldorf</h1>
-    `;
-    document.body.insertBefore(splash, document.body.firstChild);
-    
-    // Add class to main content
-    const mainContent = document.getElementById('cc-inner') || document.body.querySelector('.jtpl-main');
-    if (mainContent) {
-        mainContent.classList.add('main-content');
-    }
-    
-    // Remove splash after 3 seconds
-    setTimeout(function() {
-        splash.remove();
-    }, 3000);
-    
-    // Create Dark Mode Toggle
-    const toggleButton = document.createElement('div');
-    toggleButton.className = 'dark-mode-toggle';
-    toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
-    document.body.appendChild(toggleButton);
-    
-    // Check for saved preference
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-        toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
-    }
-    
-    // Toggle functionality
-    toggleButton.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        const isNowDark = document.body.classList.contains('dark-mode');
-        
-        if (isNowDark) {
-            toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
-            localStorage.setItem('darkMode', 'true');
-        } else {
-            toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
-            localStorage.setItem('darkMode', 'false');
-        }
-    });
-})();
-</script>
 
 <style type="text/css">
 /* NAVIGATION FIX - Smooth Dropdown Transitions */
@@ -1129,3 +1032,62 @@ addAutomatedTracking('creator.website', track_anon);
 
 </body>
 </html>
+<script>
+(function() {
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    function init() {
+        // Create Welcome Splash Screen
+        const splash = document.createElement('div');
+        splash.className = 'welcome-splash';
+        splash.innerHTML = '<img src="images/load.png" alt="LMG Logo" onerror="this.style.display=\'none\'"><h1>Herzlich Willkommen auf der Seite des<br>Leibniz-Montessori-Gymnasiums Düsseldorf</h1>';
+        document.body.insertBefore(splash, document.body.firstChild);
+        
+        // Add class to main content
+        const mainContent = document.getElementById('cc-inner') || document.body.querySelector('.jtpl-main');
+        if (mainContent) {
+            mainContent.classList.add('main-content');
+        }
+        
+        // Remove splash after 3 seconds
+        setTimeout(function() {
+            splash.style.opacity = '0';
+            setTimeout(function() {
+                splash.remove();
+            }, 800);
+        }, 3000);
+        
+        // Create Dark Mode Toggle
+        const toggleButton = document.createElement('div');
+        toggleButton.className = 'dark-mode-toggle';
+        toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
+        document.body.appendChild(toggleButton);
+        
+        // Check for saved preference
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
+        }
+        
+        // Toggle functionality
+        toggleButton.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const isNowDark = document.body.classList.contains('dark-mode');
+            
+            if (isNowDark) {
+                toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+    }
+})();
+</script>
