@@ -166,7 +166,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     left: 0;
     width: 100%;
     height: 100vh;
-    background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%);
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -198,7 +198,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
 .welcome-splash h1 {
     font-family: 'Georgia', serif;
     font-size: 2.5rem;
-    color: #333;
+    color: #999;
     text-align: center;
     max-width: 800px;
     padding: 0 2rem;
@@ -228,7 +228,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     }
 }
 
-/* DARK MODE TOGGLE */
+/* DARK MODE TOGGLE - ICON ONLY */
 .dark-mode-toggle {
     position: fixed !important;
     top: 20px !important;
@@ -236,15 +236,15 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     z-index: 100000 !important;
     background: #fff !important;
     border: 2px solid #ddd !important;
-    border-radius: 30px !important;
-    padding: 8px 16px !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    padding: 0 !important;
     cursor: pointer !important;
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    justify-content: center !important;
     font-family: Arial, sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
     transition: all 0.3s ease !important;
     opacity: 0;
@@ -259,17 +259,26 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
 
 .dark-mode-toggle:hover {
     box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
-    transform: translateY(-2px) !important;
+    transform: translateY(-2px) scale(1.05) !important;
 }
 
 .dark-mode-toggle .icon {
-    font-size: 18px !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+}
+
+.dark-mode-toggle .text {
+    display: none !important;
 }
 
 /* DARK MODE STYLES */
 body.dark-mode {
     background-color: #1a1a1a !important;
     color: #e0e0e0 !important;
+}
+
+body.dark-mode .jtpl-background-area {
+    opacity: 0.15 !important;
 }
 
 body.dark-mode .jtpl-main,
@@ -304,7 +313,11 @@ body.dark-mode .dark-mode-toggle {
 }
 
 body.dark-mode .jtpl-navigation {
-    background-color: #2a2a2a !important;
+    background-color: rgba(42, 42, 42, 0.95) !important;
+}
+
+body.dark-mode .jtpl-header {
+    background-color: transparent !important;
 }
 
 body.dark-mode .j-nav-level-1,
@@ -350,6 +363,13 @@ body.dark-mode .j-module.j-header::before {
     }
     .welcome-splash img {
         max-height: 200px;
+    }
+    .dark-mode-toggle {
+        width: 45px !important;
+        height: 45px !important;
+    }
+    .dark-mode-toggle .icon {
+        font-size: 20px !important;
     }
 }
 </style>
@@ -1034,7 +1054,6 @@ addAutomatedTracking('creator.website', track_anon);
 </html>
 <script>
 (function() {
-    // Wait for DOM to be ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
@@ -1042,19 +1061,16 @@ addAutomatedTracking('creator.website', track_anon);
     }
     
     function init() {
-        // Create Welcome Splash Screen
         const splash = document.createElement('div');
         splash.className = 'welcome-splash';
         splash.innerHTML = '<img src="images/load.png" alt="LMG Logo" onerror="this.style.display=\'none\'"><h1>Herzlich Willkommen auf der Seite des<br>Leibniz-Montessori-Gymnasiums Düsseldorf</h1>';
         document.body.insertBefore(splash, document.body.firstChild);
         
-        // Add class to main content
         const mainContent = document.getElementById('cc-inner') || document.body.querySelector('.jtpl-main');
         if (mainContent) {
             mainContent.classList.add('main-content');
         }
         
-        // Remove splash after 3 seconds
         setTimeout(function() {
             splash.style.opacity = '0';
             setTimeout(function() {
@@ -1062,32 +1078,183 @@ addAutomatedTracking('creator.website', track_anon);
             }, 800);
         }, 3000);
         
-        // Create Dark Mode Toggle
         const toggleButton = document.createElement('div');
         toggleButton.className = 'dark-mode-toggle';
-        toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
+        toggleButton.innerHTML = '<span class="icon">🌙</span>';
         document.body.appendChild(toggleButton);
         
-        // Check for saved preference
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
-            toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
+            toggleButton.innerHTML = '<span class="icon">☀️</span>';
         }
         
-        // Toggle functionality
         toggleButton.addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
             const isNowDark = document.body.classList.contains('dark-mode');
             
             if (isNowDark) {
-                toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
+                toggleButton.innerHTML = '<span class="icon">☀️</span>';
                 localStorage.setItem('darkMode', 'true');
             } else {
-                toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
+                toggleButton.innerHTML = '<span class="icon">🌙</span>';
                 localStorage.setItem('darkMode', 'false');
             }
         });
+    }
+})();
+</script>
+
+<style type="text/css">
+/* FLOATING BACKGROUND QUOTES */
+.floating-quotes-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.floating-quote {
+    position: absolute;
+    font-family: 'Georgia', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.08);
+    white-space: nowrap;
+    animation: floatAcross 25s linear;
+    opacity: 0;
+}
+
+body.dark-mode .floating-quote {
+    color: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes floatAcross {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes floatAcrossReverse {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .floating-quote {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<script>
+(function() {
+    const quotes = [
+        "Hilf mir, es selbst zu tun.",
+        "Das Kind ist der Baumeister des Menschen.",
+        "Nicht das Kind soll sich der Umgebung anpassen, sondern wir sollten die Umgebung dem Kind anpassen.",
+        "Freiheit bedeutet nicht Zügellosigkeit, sondern Selbstdisziplin.",
+        "Die Hand ist das Werkzeug des Geistes.",
+        "Erziehung ist eine Hilfe zum Leben.",
+        "Das Spiel ist die Arbeit des Kindes.",
+        "Der größte Erfolg der Erziehung ist nicht Wissen, sondern Begeisterung.",
+        "Jedes unnötige Helfen ist ein Hindernis für die Entwicklung."
+    ];
+    
+    function initFloatingQuotes() {
+        // Wait for splash screen to finish
+        setTimeout(function() {
+            const container = document.createElement('div');
+            container.className = 'floating-quotes-container';
+            document.body.appendChild(container);
+            
+            function createFloatingQuote() {
+                const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                const quoteElement = document.createElement('div');
+                quoteElement.className = 'floating-quote';
+                quoteElement.textContent = quote;
+                
+                // Random vertical position (15% to 85% of viewport height)
+                const randomTop = 15 + Math.random() * 70;
+                quoteElement.style.top = randomTop + '%';
+                
+                // Random direction (left to right or right to left)
+                const direction = Math.random() > 0.5 ? 'ltr' : 'rtl';
+                
+                if (direction === 'ltr') {
+                    quoteElement.style.left = '-100%';
+                    quoteElement.style.animation = 'floatAcross 25s linear';
+                    quoteElement.style.animationFillMode = 'forwards';
+                    
+                    // Animate from left to right
+                    setTimeout(function() {
+                        quoteElement.style.transition = 'left 25s linear';
+                        quoteElement.style.left = '100%';
+                    }, 50);
+                } else {
+                    quoteElement.style.right = '-100%';
+                    quoteElement.style.animation = 'floatAcrossReverse 25s linear';
+                    quoteElement.style.animationFillMode = 'forwards';
+                    
+                    // Animate from right to left
+                    setTimeout(function() {
+                        quoteElement.style.transition = 'right 25s linear';
+                        quoteElement.style.right = '100%';
+                    }, 50);
+                }
+                
+                container.appendChild(quoteElement);
+                
+                // Remove after animation completes
+                setTimeout(function() {
+                    quoteElement.remove();
+                }, 25000);
+            }
+            
+            // Create first quote immediately
+            createFloatingQuote();
+            
+            // Create new quote every 8-15 seconds (random interval)
+            function scheduleNextQuote() {
+                const delay = 8000 + Math.random() * 7000; // 8-15 seconds
+                setTimeout(function() {
+                    createFloatingQuote();
+                    scheduleNextQuote();
+                }, delay);
+            }
+            
+            scheduleNextQuote();
+            
+        }, 3500); // Wait for splash screen + 500ms
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initFloatingQuotes);
+    } else {
+        initFloatingQuotes();
     }
 })();
 </script>
