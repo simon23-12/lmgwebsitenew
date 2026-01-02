@@ -159,6 +159,187 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     
 
 <style type="text/css">
+/* DARK MODE TOGGLE */
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10000;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+.dark-mode-toggle .icon {
+    font-size: 18px;
+}
+
+/* DARK MODE STYLES */
+body.dark-mode {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .jtpl-main,
+body.dark-mode .jtpl-content,
+body.dark-mode .content-section,
+body.dark-mode .cc-m-hgrid,
+body.dark-mode .j-module {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode strong {
+    color: #ffffff !important;
+}
+
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode div {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode a {
+    color: #ffa500 !important;
+}
+
+body.dark-mode a:hover {
+    color: #ff8c00 !important;
+}
+
+body.dark-mode .dark-mode-toggle {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .jtpl-navigation {
+    background-color: #2a2a2a !important;
+    border-bottom-color: #444 !important;
+}
+
+body.dark-mode .j-nav-level-1,
+body.dark-mode .j-nav-level-2 {
+    background: #2a2a2a !important;
+}
+
+body.dark-mode .j-nav-level-1 a,
+body.dark-mode .j-nav-level-2 a {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .jtpl-breadcrumbs {
+    background-color: #2a2a2a !important;
+}
+
+body.dark-mode .footer-info,
+body.dark-mode .site-footer {
+    background-color: #0a0a0a !important;
+}
+
+/* ELEGANT SECTION SEPARATORS */
+.j-module.j-hr {
+    display: none !important;
+}
+
+.j-module.j-header {
+    margin-top: 4rem !important;
+    margin-bottom: 2rem !important;
+    padding-top: 3rem !important;
+    border-top: none !important;
+    position: relative !important;
+}
+
+.j-module.j-header::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 120px !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, #f90 0%, #ffa500 50%, transparent 100%) !important;
+    border-radius: 2px !important;
+}
+
+.j-module.j-header h1 {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    color: #333 !important;
+    margin: 0 !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+}
+
+body.dark-mode .j-module.j-header::before {
+    background: linear-gradient(90deg, #ffa500 0%, #ff8c00 50%, transparent 100%) !important;
+}
+
+body.dark-mode .j-module.j-header h1 {
+    color: #ffffff !important;
+}
+
+/* Better spacing between sections */
+.j-module.j-text {
+    margin-bottom: 1.5rem !important;
+}
+
+.cc-m-hgrid {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+}
+</style>
+
+<script>
+// Dark Mode Toggle Functionality
+(function() {
+    // Create toggle button
+    const toggleButton = document.createElement('div');
+    toggleButton.className = 'dark-mode-toggle';
+    toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
+    document.body.appendChild(toggleButton);
+    
+    // Check for saved preference
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
+    }
+    
+    // Toggle functionality
+    toggleButton.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const isNowDark = document.body.classList.contains('dark-mode');
+        
+        if (isNowDark) {
+            toggleButton.innerHTML = '<span class="icon">☀️</span><span class="text">Light Mode</span>';
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            toggleButton.innerHTML = '<span class="icon">🌙</span><span class="text">Dark Mode</span>';
+            localStorage.setItem('darkMode', 'false');
+        }
+    });
+})();
+</script>
+
+<style type="text/css">
 /* NAVIGATION FIX - Smooth Dropdown Transitions */
 .j-nav-level-1, .j-nav-level-2 {
     opacity: 0 !important;
