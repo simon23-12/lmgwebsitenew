@@ -1106,7 +1106,7 @@ addAutomatedTracking('creator.website', track_anon);
 </script>
 
 <style type="text/css">
-/* FLOATING BACKGROUND QUOTES - HORIZONTAL ONLY */
+/* FLOATING BACKGROUND QUOTES - FINAL VERSION */
 .floating-quotes-container {
     position: fixed;
     top: 0;
@@ -1131,14 +1131,27 @@ body.dark-mode .floating-quote {
     color: rgba(255, 255, 255, 0.05);
 }
 
-/* FIX: Dark Mode Header Banner */
+/* Mask out main content area */
+.jtpl-main,
+.jtpl-section-main {
+    position: relative;
+    z-index: 10;
+    background: inherit;
+}
+
+/* FIX: Dark Mode Header Banner - SHOW IMAGES */
 body.dark-mode .jtpl-header {
     background-color: transparent !important;
 }
 
 body.dark-mode .jqbga-slider,
 body.dark-mode .jqbga-slider--image {
-    opacity: 0.2 !important;
+    opacity: 0.3 !important;
+    filter: brightness(0.7) !important;
+}
+
+body.dark-mode .jtpl-background-area {
+    opacity: 0.3 !important;
 }
 
 @media (max-width: 768px) {
@@ -1167,6 +1180,7 @@ body.dark-mode .jqbga-slider--image {
     ];
     
     function initFloatingQuotes() {
+        // Start after splash screen (reduced from 3500ms to 3200ms)
         setTimeout(function() {
             const container = document.createElement('div');
             container.className = 'floating-quotes-container';
@@ -1183,50 +1197,50 @@ body.dark-mode .jqbga-slider--image {
                 quoteElement.style.fontSize = fontSize + 'rem';
                 
                 // Random opacity for more depth variation
-                const baseOpacity = 0.06 + Math.random() * 0.04; // 0.06 to 0.10
+                const baseOpacity = 0.06 + Math.random() * 0.04;
                 const isDark = document.body.classList.contains('dark-mode');
                 quoteElement.style.color = isDark 
                     ? `rgba(255, 255, 255, ${baseOpacity})` 
                     : `rgba(0, 0, 0, ${baseOpacity})`;
                 
-                // Random vertical position (FIXED - no movement)
-                const yPos = 10 + Math.random() * 80; // 10-90% height
+                // Random vertical position (10-90% height)
+                const yPos = 10 + Math.random() * 80;
                 quoteElement.style.top = yPos + '%';
                 
-                // Random direction (left to right or right to left)
+                // Random direction
                 const direction = Math.random() > 0.5;
                 
-                // Random duration based on size (smaller = faster for depth effect)
-                const duration = 15 + (fontSize - 1.2) * 10; // 15-25 seconds
+                // SLOWER duration: 40-60 seconds (was 15-25)
+                const duration = 40 + (fontSize - 1.2) * 20;
+                
+                // Random starting position ANYWHERE on screen (-20% to 120%)
+                const startOffset = -20 + Math.random() * 140;
                 
                 if (direction) {
-                    // Left to right
-                    quoteElement.style.left = '-100%';
-                    quoteElement.style.transform = 'translateX(0)';
+                    // Moving right
+                    quoteElement.style.left = startOffset + '%';
                 } else {
-                    // Right to left
-                    quoteElement.style.right = '-100%';
-                    quoteElement.style.transform = 'translateX(0)';
+                    // Moving left
+                    quoteElement.style.right = startOffset + '%';
                 }
                 
                 container.appendChild(quoteElement);
                 
-                // Animate
+                // Fade in and start moving
                 setTimeout(function() {
                     if (direction) {
                         quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, left ${duration}s linear`;
                         quoteElement.style.opacity = '1';
-                        quoteElement.style.left = '100%';
+                        quoteElement.style.left = '120%';
                     } else {
                         quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, right ${duration}s linear`;
                         quoteElement.style.opacity = '1';
-                        quoteElement.style.right = '100%';
+                        quoteElement.style.right = '120%';
                     }
                 }, 50);
                 
-                // Fade out before end
+                // Fade out before end (last 15% of animation)
                 setTimeout(function() {
-                    quoteElement.style.transition += `, opacity ${duration * 0.15}s ease-in`;
                     quoteElement.style.opacity = '0';
                 }, duration * 850);
                 
@@ -1238,11 +1252,11 @@ body.dark-mode .jqbga-slider--image {
             
             // Create first 2 quotes immediately with delay
             createFloatingQuote();
-            setTimeout(createFloatingQuote, 3000);
+            setTimeout(createFloatingQuote, 2000);
             
             // Create new quote every 4-8 seconds
             function scheduleNextQuote() {
-                const delay = 4000 + Math.random() * 4000; // 4-8 seconds
+                const delay = 4000 + Math.random() * 4000;
                 setTimeout(function() {
                     createFloatingQuote();
                     scheduleNextQuote();
@@ -1251,7 +1265,7 @@ body.dark-mode .jqbga-slider--image {
             
             scheduleNextQuote();
             
-        }, 3500);
+        }, 3200); // Start sooner (was 3500)
     }
     
     if (document.readyState === 'loading') {
