@@ -245,7 +245,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
 <style type="text/css">
 /* NAVIGATION FIX - Smooth Dropdown Transitions */
 .j-nav-level-1, .j-nav-level-2 {
-    opacity: 0 !important;
+    opacity: 1 !important;
     visibility: hidden !important;
     pointer-events: none !important;
     transform: translateY(10px) !important;
@@ -373,6 +373,49 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
 .jtpl-navigation {
     position: relative !important;
     z-index: 10 !important;
+}
+</style>
+
+
+<style>
+/* === FIX: Quotes only left & right, never over content === */
+
+/* Main content width reference */
+.jtpl-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+    background: #fff;
+}
+
+/* Background / quote layer */
+.jtpl-background-area {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+/* Mask middle area so quotes are NOT visible there */
+.jtpl-background-area::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1100px;
+    height: 100%;
+    background: #fff;
+}
+
+/* Ensure header, nav, content stay above */
+.jtpl-header,
+.jtpl-navigation,
+.jtpl-content {
+    position: relative !important;
+    z-index: 10 !important;
+    background: #fff;
 }
 </style>
 
@@ -1061,7 +1104,7 @@ body. .jqbga-slider::after,
 body. .jqbga-slider--image::before,
 body. .jqbga-slider--image::after {
     display: none !important;
-    opacity: 0 !important;
+    opacity: 1 !important;
     background: transparent !important;
 }
 
