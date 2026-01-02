@@ -1158,9 +1158,11 @@ addAutomatedTracking('creator.website', track_anon);
         targetSlots.push(slotEntry);
         
         if (useLeft) {
-            // Left sidebar - starts from left edge, moves right
-            quoteElement.style.transform = 'translateX(-100%)';
-            quoteElement.style.left = '0';
+            // Left sidebar - spawn anywhere, move random direction
+            const startX = Math.random() * 100; // 0-100% within container
+            const moveLeft = Math.random() > 0.5;
+            
+            quoteElement.style.left = startX + '%';
             leftContainer.appendChild(quoteElement);
             
             // Force reflow then start animation
@@ -1170,13 +1172,16 @@ addAutomatedTracking('creator.website', track_anon);
                 requestAnimationFrame(() => {
                     quoteElement.style.opacity = '1';
                     quoteElement.style.transition = `opacity 0.8s ease-out, transform ${duration}s linear`;
-                    quoteElement.style.transform = 'translateX(100%)';
+                    // Move left or right by full container width
+                    quoteElement.style.transform = moveLeft ? 'translateX(-150%)' : 'translateX(150%)';
                 });
             });
         } else {
-            // Right sidebar - starts from right edge, moves left
-            quoteElement.style.transform = 'translateX(100%)';
-            quoteElement.style.right = '0';
+            // Right sidebar - spawn anywhere, move random direction
+            const startX = Math.random() * 100; // 0-100% within container
+            const moveLeft = Math.random() > 0.5;
+            
+            quoteElement.style.left = startX + '%';
             rightContainer.appendChild(quoteElement);
             
             // Force reflow then start animation
@@ -1186,7 +1191,8 @@ addAutomatedTracking('creator.website', track_anon);
                 requestAnimationFrame(() => {
                     quoteElement.style.opacity = '1';
                     quoteElement.style.transition = `opacity 0.8s ease-out, transform ${duration}s linear`;
-                    quoteElement.style.transform = 'translateX(-100%)';
+                    // Move left or right by full container width
+                    quoteElement.style.transform = moveLeft ? 'translateX(-150%)' : 'translateX(150%)';
                 });
             });
         }
