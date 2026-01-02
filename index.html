@@ -156,6 +156,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     });
 //]]>
 </script>
+    
 
 <style type="text/css">
 /* NAVIGATION FIX - Smooth Dropdown Transitions */
@@ -170,7 +171,8 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
     border-radius: 4px !important;
     padding: 8px 0 !important;
-    min-width: 220px !important;
+    min-width: 280px !important;
+    max-width: 450px !important;
     z-index: 9999 !important;
 }
 
@@ -186,13 +188,24 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     margin-left: 5px !important;
 }
 
+/* Keep dropdown open when hovering over parent OR dropdown itself */
 .j-nav-has-children:hover > .j-nav-level-1,
-.j-nav-has-children:hover > .j-nav-level-2 {
+.j-nav-level-1:hover,
+.j-nav-has-children:hover > .j-nav-level-2,
+.j-nav-level-2:hover {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
     transform: translateY(0) !important;
     transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0s !important;
+}
+
+/* Keep submenu open when hovering nested items */
+.jmd-nav__list-item-1:hover > .j-nav-level-2,
+.jmd-nav__list-item-2:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 
 .jmd-nav__list-item-0, 
@@ -215,7 +228,9 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     color: #333 !important;
     text-decoration: none !important;
     transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease !important;
-    white-space: nowrap !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    line-height: 1.4 !important;
     border-radius: 0 !important;
 }
 
@@ -230,6 +245,7 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     display: none !important;
 }
 
+/* Ensure parent items remain styled correctly */
 .j-nav-has-children > a {
     padding-right: 30px !important;
     position: relative !important;
@@ -250,8 +266,6 @@ $j('.jtpl-header').insertBefore('.jtpl-navigation');
     content: "▶" !important;
 }
 </style>
-
-    
 </head>
 
 <body class="body cc-page cc-page-index cc-indexpage j-has-shop j-m-gallery-styles j-m-video-styles j-m-hr-styles j-m-header-styles j-m-text-styles j-m-emotionheader-styles j-m-htmlCode-styles j-m-rss-styles j-m-form-styles-disabled j-m-table-styles j-m-textWithImage-styles j-m-downloadDocument-styles j-m-imageSubtitle-styles j-m-flickr-styles j-m-googlemaps-styles j-m-blogSelection-styles-disabled j-m-comment-styles-disabled j-m-jimdo-styles j-m-profile-styles j-m-guestbook-styles j-m-promotion-styles j-m-twitter-styles j-m-hgrid-styles j-m-shoppingcart-styles j-m-catalog-styles j-m-product-styles-disabled j-m-facebook-styles j-m-sharebuttons-styles j-m-formnew-styles-disabled j-m-callToAction-styles j-m-turbo-styles j-m-spacing-styles j-m-googleplus-styles j-m-dummy-styles j-m-search-styles j-m-booking-styles j-footer-styles cc-pagemode-default cc-content-parent" id="page-2298283822">
@@ -820,98 +834,3 @@ addAutomatedTracking('creator.website', track_anon);
 
 </body>
 </html>
-
-<style type="text/css">
-/* NAVIGATION FIX - Smooth Dropdown Transitions */
-.j-nav-level-1, .j-nav-level-2 {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateY(10px) !important;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s !important;
-    position: absolute !important;
-    background: #fff !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-    border-radius: 4px !important;
-    padding: 8px 0 !important;
-    min-width: 220px !important;
-    z-index: 9999 !important;
-}
-
-.j-nav-level-1 {
-    top: 100% !important;
-    left: 0 !important;
-    margin-top: 5px !important;
-}
-
-.j-nav-level-2 {
-    top: 0 !important;
-    left: 100% !important;
-    margin-left: 5px !important;
-}
-
-.j-nav-has-children:hover > .j-nav-level-1,
-.j-nav-has-children:hover > .j-nav-level-2 {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translateY(0) !important;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0s !important;
-}
-
-.jmd-nav__list-item-0, 
-.jmd-nav__list-item-1,
-.jmd-nav__list-item-2 {
-    position: relative !important;
-}
-
-.j-nav-level-1 li,
-.j-nav-level-2 li {
-    list-style: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.j-nav-level-1 a,
-.j-nav-level-2 a {
-    display: block !important;
-    padding: 10px 20px !important;
-    color: #333 !important;
-    text-decoration: none !important;
-    transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease !important;
-    white-space: nowrap !important;
-    border-radius: 0 !important;
-}
-
-.j-nav-level-1 a:hover,
-.j-nav-level-2 a:hover {
-    background-color: #f5f5f5 !important;
-    color: #f90 !important;
-    padding-left: 25px !important;
-}
-
-.jmd-nav__toggle-button {
-    display: none !important;
-}
-
-/* Ensure parent items remain styled correctly */
-.j-nav-has-children > a {
-    padding-right: 30px !important;
-    position: relative !important;
-}
-
-.j-nav-has-children > a:after {
-    content: '▼' !important;
-    position: absolute !important;
-    right: 12px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    font-size: 10px !important;
-    opacity: 0.6 !important;
-}
-
-.jmd-nav__list-item-1.j-nav-has-children > a:after,
-.jmd-nav__list-item-2.j-nav-has-children > a:after {
-    content: '▶' !important;
-}
-</style>
