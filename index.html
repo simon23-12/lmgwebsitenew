@@ -1106,7 +1106,7 @@ addAutomatedTracking('creator.website', track_anon);
 </script>
 
 <style type="text/css">
-/* FLOATING BACKGROUND QUOTES - FINAL VERSION */
+/* FLOATING BACKGROUND QUOTES - SIDEBAR ONLY */
 .floating-quotes-container {
     position: fixed;
     top: 0;
@@ -1131,27 +1131,34 @@ body.dark-mode .floating-quote {
     color: rgba(255, 255, 255, 0.05);
 }
 
-/* Mask out main content area */
-.jtpl-main,
-.jtpl-section-main {
-    position: relative;
-    z-index: 10;
-    background: inherit;
+/* Block quotes from appearing in main content area */
+.floating-quotes-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 }
 
-/* FIX: Dark Mode Header Banner - SHOW IMAGES */
+/* FIX: Dark Mode Header Banner - KEEP IMAGES VISIBLE */
 body.dark-mode .jtpl-header {
     background-color: transparent !important;
 }
 
 body.dark-mode .jqbga-slider,
-body.dark-mode .jqbga-slider--image {
-    opacity: 0.3 !important;
-    filter: brightness(0.7) !important;
+body.dark-mode .jqbga-slider--image,
+body.dark-mode .jtpl-background-area {
+    opacity: 1 !important;
+    filter: none !important;
 }
 
-body.dark-mode .jtpl-background-area {
-    opacity: 0.3 !important;
+/* Keep background images at full brightness in dark mode */
+body.dark-mode .jqbga-slider img,
+body.dark-mode .jqbga-slider--image img {
+    opacity: 1 !important;
+    filter: none !important;
 }
 
 @media (max-width: 768px) {
@@ -1180,11 +1187,24 @@ body.dark-mode .jtpl-background-area {
     ];
     
     function initFloatingQuotes() {
-        // Start after splash screen (reduced from 3500ms to 3200ms)
         setTimeout(function() {
             const container = document.createElement('div');
             container.className = 'floating-quotes-container';
             document.body.appendChild(container);
+            
+            // Get main content width to calculate sidebar areas
+            function getContentBounds() {
+                const mainContent = document.querySelector('.jtpl-main') || document.querySelector('.layout-alignment');
+                if (mainContent) {
+                    const rect = mainContent.getBoundingClientRect();
+                    return {
+                        left: rect.left,
+                        right: rect.right,
+                        width: window.innerWidth
+                    };
+                }
+                return { left: 0, right: window.innerWidth, width: window.innerWidth };
+            }
             
             function createFloatingQuote() {
                 const quote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -1192,54 +1212,71 @@ body.dark-mode .jtpl-background-area {
                 quoteElement.className = 'floating-quote';
                 quoteElement.textContent = quote;
                 
-                // Random size for depth effect (1.2rem to 2.2rem)
+                const bounds = getContentBounds();
+                const leftSidebarWidth = bounds.left;
+                const rightSidebarStart = bounds.right;
+                const totalWidth = bounds.width;
+                
+                // Only spawn in sidebars if they exist (desktop view)
+                if (leftSidebarWidth < 50 && (totalWidth - rightSidebarStart) < 50) {
+                    // Mobile view - skip quote creation
+                    return;
+                }
+                
+                // Random size for depth effect
                 const fontSize = 1.2 + Math.random() * 1.0;
                 quoteElement.style.fontSize = fontSize + 'rem';
                 
-                // Random opacity for more depth variation
+                // Random opacity
                 const baseOpacity = 0.06 + Math.random() * 0.04;
                 const isDark = document.body.classList.contains('dark-mode');
                 quoteElement.style.color = isDark 
                     ? `rgba(255, 255, 255, ${baseOpacity})` 
                     : `rgba(0, 0, 0, ${baseOpacity})`;
                 
-                // Random vertical position (10-90% height)
+                // Random vertical position
                 const yPos = 10 + Math.random() * 80;
                 quoteElement.style.top = yPos + '%';
                 
-                // Random direction
-                const direction = Math.random() > 0.5;
+                // Choose random sidebar (left or right)
+                const useLeftSidebar = Math.random() > 0.5;
                 
-                // SLOWER duration: 40-60 seconds (was 15-25)
+                // SLOWER duration: 40-60 seconds
                 const duration = 40 + (fontSize - 1.2) * 20;
                 
-                // Random starting position ANYWHERE on screen (-20% to 120%)
-                const startOffset = -20 + Math.random() * 140;
-                
-                if (direction) {
-                    // Moving right
-                    quoteElement.style.left = startOffset + '%';
-                } else {
-                    // Moving left
-                    quoteElement.style.right = startOffset + '%';
-                }
-                
-                container.appendChild(quoteElement);
-                
-                // Fade in and start moving
-                setTimeout(function() {
-                    if (direction) {
+                if (useLeftSidebar && leftSidebarWidth > 50) {
+                    // Left sidebar - move right
+                    quoteElement.style.left = '-100%';
+                    quoteElement.style.right = 'auto';
+                    
+                    container.appendChild(quoteElement);
+                    
+                    setTimeout(function() {
                         quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, left ${duration}s linear`;
                         quoteElement.style.opacity = '1';
-                        quoteElement.style.left = '120%';
-                    } else {
+                        // Move to just before content area
+                        quoteElement.style.left = (leftSidebarWidth - 100) + 'px';
+                    }, 50);
+                } else if (totalWidth - rightSidebarStart > 50) {
+                    // Right sidebar - move left
+                    quoteElement.style.right = '-100%';
+                    quoteElement.style.left = 'auto';
+                    
+                    container.appendChild(quoteElement);
+                    
+                    setTimeout(function() {
                         quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, right ${duration}s linear`;
                         quoteElement.style.opacity = '1';
-                        quoteElement.style.right = '120%';
-                    }
-                }, 50);
+                        // Move to just after content area
+                        const rightSidebarWidth = totalWidth - rightSidebarStart;
+                        quoteElement.style.right = (rightSidebarWidth - 100) + 'px';
+                    }, 50);
+                } else {
+                    // No suitable sidebar - don't create quote
+                    return;
+                }
                 
-                // Fade out before end (last 15% of animation)
+                // Fade out before end
                 setTimeout(function() {
                     quoteElement.style.opacity = '0';
                 }, duration * 850);
@@ -1250,7 +1287,7 @@ body.dark-mode .jtpl-background-area {
                 }, duration * 1000);
             }
             
-            // Create first 2 quotes immediately with delay
+            // Create first 2 quotes
             createFloatingQuote();
             setTimeout(createFloatingQuote, 2000);
             
@@ -1265,7 +1302,7 @@ body.dark-mode .jtpl-background-area {
             
             scheduleNextQuote();
             
-        }, 3200); // Start sooner (was 3500)
+        }, 3200);
     }
     
     if (document.readyState === 'loading') {
