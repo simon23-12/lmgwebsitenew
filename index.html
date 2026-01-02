@@ -969,12 +969,24 @@ addAutomatedTracking('creator.website', track_anon);
 </script>
 
 <style type="text/css">
-/* FLOATING BACKGROUND QUOTES - SIDEBAR ONLY */
-.floating-quotes-container {
+/* FLOATING BACKGROUND QUOTES - SIDEBAR ONLY WITH CLIPPING */
+
+/* Left sidebar quote container - clips to left margin only */
+.floating-quotes-left {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Right sidebar quote container - clips to right margin only */
+.floating-quotes-right {
+    position: fixed;
+    top: 0;
+    right: 0;
     height: 100%;
     pointer-events: none;
     z-index: 1;
@@ -988,22 +1000,16 @@ addAutomatedTracking('creator.website', track_anon);
     color: rgba(0, 0, 0, 0.35);
     white-space: nowrap;
     opacity: 0;
-}
-
-/* Block quotes from appearing in main content area */
-.floating-quotes-container::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    transition: opacity 0.5s ease-out;
 }
 
 @media (max-width: 768px) {
     .floating-quote {
-        font-size: 1rem !important;
+        display: none !important;
+    }
+    .floating-quotes-left,
+    .floating-quotes-right {
+        display: none !important;
     }
 }
 </style>
@@ -1026,150 +1032,139 @@ addAutomatedTracking('creator.website', track_anon);
         "Die erste Aufgabe der Erziehung ist es, dem Kind Unabhängigkeit zu ermöglichen."
     ];
     
-    function initFloatingQuotes() {
-        // Wait for splash screen to fade out (3000ms splash + 800ms fade)
-        setTimeout(function() {
-            const container = document.createElement('div');
-            container.className = 'floating-quotes-container';
-            document.body.appendChild(container);
-            
-            // Get main content width to calculate sidebar areas
-            function getContentBounds() {
-                const mainContent = document.querySelector('.jtpl-main') || document.querySelector('.layout-alignment');
-                if (mainContent) {
-                    const rect = mainContent.getBoundingClientRect();
-                    return {
-                        left: rect.left,
-                        right: rect.right,
-                        width: window.innerWidth
-                    };
-                }
-                return { left: 0, right: window.innerWidth, width: window.innerWidth };
-            }
-            
-            function createFloatingQuote() {
-                const quote = quotes[Math.floor(Math.random() * quotes.length)];
-                const quoteElement = document.createElement('div');
-                quoteElement.className = 'floating-quote';
-                quoteElement.textContent = quote;
-                
-                const bounds = getContentBounds();
-                const leftSidebarWidth = bounds.left;
-                const rightSidebarStart = bounds.right;
-                const totalWidth = bounds.width;
-                
-                // Only spawn in sidebars if they exist (desktop view)
-                if (leftSidebarWidth < 50 && (totalWidth - rightSidebarStart) < 50) {
-                    // Mobile view - skip quote creation
-                    return;
-                }
-                
-                // Random size for depth effect
-                const fontSize = 1.2 + Math.random() * 1.0;
-                quoteElement.style.fontSize = fontSize + 'rem';
-                
-                // Opacity for readability on light background
-                const baseOpacity = 0.30 + Math.random() * 0.15;
-                quoteElement.style.color = `rgba(0, 0, 0, ${baseOpacity})`;
-                
-                // FULL vertical range - quotes can appear anywhere on Y axis
-                const yPos = 5 + Math.random() * 85;
-                quoteElement.style.top = yPos + '%';
-                
-                // Choose random sidebar (left or right)
-                const useLeftSidebar = Math.random() > 0.5;
-                
-                // Duration: 40-60 seconds
-                const duration = 40 + (fontSize - 1.2) * 20;
-                
-                if (useLeftSidebar && leftSidebarWidth > 50) {
-                    // Left sidebar - move right
-                    quoteElement.style.left = '-100%';
-                    quoteElement.style.right = 'auto';
-                    
-                    container.appendChild(quoteElement);
-                    
-                    setTimeout(function() {
-                        quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, left ${duration}s linear`;
-                        quoteElement.style.opacity = '1';
-                        // Move to just before content area
-                        quoteElement.style.left = (leftSidebarWidth - 100) + 'px';
-                    }, 50);
-                } else if (totalWidth - rightSidebarStart > 50) {
-                    // Right sidebar - move left
-                    quoteElement.style.right = '-100%';
-                    quoteElement.style.left = 'auto';
-                    
-                    container.appendChild(quoteElement);
-                    
-                    setTimeout(function() {
-                        quoteElement.style.transition = `opacity ${duration * 0.1}s ease-out, right ${duration}s linear`;
-                        quoteElement.style.opacity = '1';
-                        // Move to just after content area
-                        const rightSidebarWidth = totalWidth - rightSidebarStart;
-                        quoteElement.style.right = (rightSidebarWidth - 100) + 'px';
-                    }, 50);
-                } else {
-                    // No suitable sidebar - don't create quote
-                    return;
-                }
-                
-                // Fade out before end
-                setTimeout(function() {
-                    quoteElement.style.opacity = '0';
-                }, duration * 850);
-                
-                // Remove element
-                setTimeout(function() {
-                    quoteElement.remove();
-                }, duration * 1000);
-            }
-            
-            // Create first 2 quotes
-            createFloatingQuote();
-            setTimeout(createFloatingQuote, 2000);
-            
-            // Create new quote every 4-8 seconds
-            function scheduleNextQuote() {
-                const delay = 4000 + Math.random() * 4000;
-                setTimeout(function() {
-                    createFloatingQuote();
-                    scheduleNextQuote();
-                }, delay);
-            }
-            
-            scheduleNextQuote();
-            
-        }, 50);
+    let leftContainer, rightContainer;
+    let initialized = false;
+    
+    function getContentBounds() {
+        const mainContent = document.querySelector('.jtpl-main') || document.querySelector('.layout-alignment');
+        if (mainContent) {
+            const rect = mainContent.getBoundingClientRect();
+            return {
+                left: rect.left,
+                right: rect.right,
+                width: window.innerWidth
+            };
+        }
+        return { left: 0, right: window.innerWidth, width: window.innerWidth };
     }
     
-    // Start quotes after splash screen fades (3000ms splash + 800ms fade = 3800ms)
-    // But listen for the splash removal as well
-    function waitForSplashEnd() {
-        const splash = document.querySelector('.welcome-splash');
-        if (splash) {
-            // Splash exists, wait for it to be removed or faded
-            const observer = new MutationObserver(function(mutations, obs) {
-                const splash = document.querySelector('.welcome-splash');
-                if (!splash || splash.style.opacity === '0') {
-                    obs.disconnect();
-                    initFloatingQuotes();
-                }
-            });
-            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
-            
-            // Fallback: start after 3.9 seconds regardless
-            setTimeout(initFloatingQuotes, 3900);
-        } else {
-            // No splash, start immediately
-            initFloatingQuotes();
+    function updateContainerWidths() {
+        const bounds = getContentBounds();
+        if (leftContainer) {
+            leftContainer.style.width = bounds.left + 'px';
+        }
+        if (rightContainer) {
+            rightContainer.style.width = (bounds.width - bounds.right) + 'px';
         }
     }
     
+    function createFloatingQuote() {
+        const bounds = getContentBounds();
+        const leftSidebarWidth = bounds.left;
+        const rightSidebarWidth = bounds.width - bounds.right;
+        
+        // Skip if sidebars too narrow
+        if (leftSidebarWidth < 50 && rightSidebarWidth < 50) {
+            return;
+        }
+        
+        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+        const quoteElement = document.createElement('div');
+        quoteElement.className = 'floating-quote';
+        quoteElement.textContent = quote;
+        
+        // Random size
+        const fontSize = 1.1 + Math.random() * 0.8;
+        quoteElement.style.fontSize = fontSize + 'rem';
+        
+        // Random opacity
+        const opacity = 0.25 + Math.random() * 0.20;
+        quoteElement.style.color = `rgba(0, 0, 0, ${opacity})`;
+        
+        // Random Y position
+        const yPos = 5 + Math.random() * 85;
+        quoteElement.style.top = yPos + '%';
+        
+        // Choose sidebar and set up animation
+        const useLeft = Math.random() > 0.5;
+        const duration = 30 + Math.random() * 20; // 30-50 seconds
+        
+        if (useLeft && leftSidebarWidth > 50) {
+            // Left sidebar - text enters from left, moves right within the left container
+            quoteElement.style.right = '100%'; // Start off-screen to the left (within container)
+            leftContainer.appendChild(quoteElement);
+            
+            requestAnimationFrame(() => {
+                quoteElement.style.opacity = '1';
+                quoteElement.style.transition = `opacity 0.5s ease-out, right ${duration}s linear`;
+                quoteElement.style.right = '0%'; // Move to right edge of left container
+            });
+        } else if (rightSidebarWidth > 50) {
+            // Right sidebar - text enters from right, moves left within the right container
+            quoteElement.style.left = '100%'; // Start off-screen to the right (within container)
+            rightContainer.appendChild(quoteElement);
+            
+            requestAnimationFrame(() => {
+                quoteElement.style.opacity = '1';
+                quoteElement.style.transition = `opacity 0.5s ease-out, left ${duration}s linear`;
+                quoteElement.style.left = '0%'; // Move to left edge of right container
+            });
+        } else {
+            return;
+        }
+        
+        // Fade out near end
+        setTimeout(() => {
+            quoteElement.style.opacity = '0';
+        }, duration * 900);
+        
+        // Remove element
+        setTimeout(() => {
+            quoteElement.remove();
+        }, duration * 1000 + 500);
+    }
+    
+    function initFloatingQuotes() {
+        if (initialized) return;
+        initialized = true;
+        
+        // Create left container
+        leftContainer = document.createElement('div');
+        leftContainer.className = 'floating-quotes-left';
+        document.body.appendChild(leftContainer);
+        
+        // Create right container
+        rightContainer = document.createElement('div');
+        rightContainer.className = 'floating-quotes-right';
+        document.body.appendChild(rightContainer);
+        
+        // Set initial widths
+        updateContainerWidths();
+        
+        // Update widths on resize
+        window.addEventListener('resize', updateContainerWidths);
+        
+        // Create initial quotes immediately
+        createFloatingQuote();
+        createFloatingQuote();
+        
+        // Schedule more quotes
+        function scheduleNextQuote() {
+            const delay = 3000 + Math.random() * 4000; // 3-7 seconds
+            setTimeout(() => {
+                createFloatingQuote();
+                scheduleNextQuote();
+            }, delay);
+        }
+        
+        scheduleNextQuote();
+    }
+    
+    // START IMMEDIATELY when DOM is ready - no waiting for splash
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', waitForSplashEnd);
+        document.addEventListener('DOMContentLoaded', initFloatingQuotes);
     } else {
-        waitForSplashEnd();
+        initFloatingQuotes();
     }
 })();
 </script>
