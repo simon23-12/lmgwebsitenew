@@ -278,7 +278,7 @@ body.dark-mode {
 }
 
 body.dark-mode .jtpl-background-area {
-    opacity: 0.85 !important;
+    opacity: 1 !important;
 }
 
 body.dark-mode .jtpl-main,
@@ -1122,13 +1122,13 @@ addAutomatedTracking('creator.website', track_anon);
     position: absolute;
     font-family: 'Georgia', serif;
     font-style: italic;
-    color: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.35);
     white-space: nowrap;
     opacity: 0;
 }
 
 body.dark-mode .floating-quote {
-    color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.20);
 }
 
 /* Block quotes from appearing in main content area */
@@ -1159,6 +1159,30 @@ body.dark-mode .jqbga-slider img,
 body.dark-mode .jqbga-slider--image img {
     opacity: 1 !important;
     filter: none !important;
+}
+
+/* Remove any dark overlays on the header/slider area */
+body.dark-mode .jtpl-header::before,
+body.dark-mode .jtpl-header::after,
+body.dark-mode .jqbga-slider::before,
+body.dark-mode .jqbga-slider::after,
+body.dark-mode .jqbga-slider--image::before,
+body.dark-mode .jqbga-slider--image::after {
+    display: none !important;
+    opacity: 0 !important;
+    background: transparent !important;
+}
+
+/* Ensure the actual slider container is not darkened */
+body.dark-mode .jtpl-header,
+body.dark-mode .jtpl-header *:not(.dark-mode-toggle):not(.icon) {
+    background-color: transparent !important;
+}
+
+/* Force slider images to be fully visible */
+body.dark-mode [style*="background-image"] {
+    filter: none !important;
+    opacity: 1 !important;
 }
 
 @media (max-width: 768px) {
@@ -1229,21 +1253,20 @@ body.dark-mode .jqbga-slider--image img {
                 quoteElement.style.fontSize = fontSize + 'rem';
                 
                 // Higher opacity for better readability
-                const baseOpacity = 0.15 + Math.random() * 0.10;
+                const baseOpacity = 0.20 + Math.random() * 0.15;
                 const isDark = document.body.classList.contains('dark-mode');
                 quoteElement.style.color = isDark 
                     ? `rgba(255, 255, 255, ${baseOpacity})` 
-                    : `rgba(0, 0, 0, ${baseOpacity + 0.10})`;
+                    : `rgba(0, 0, 0, ${baseOpacity + 0.15})`;
                 
-                // RESTRICTED vertical position - only in upper half where red boxes are
-                // Red boxes appear roughly from 5% to 45% of viewport height
-                const yPos = 5 + Math.random() * 40;
+                // FULL vertical range - quotes can appear anywhere on Y axis
+                const yPos = 5 + Math.random() * 85;
                 quoteElement.style.top = yPos + '%';
                 
                 // Choose random sidebar (left or right)
                 const useLeftSidebar = Math.random() > 0.5;
                 
-                // SLOWER duration: 40-60 seconds
+                // Duration: 40-60 seconds
                 const duration = 40 + (fontSize - 1.2) * 20;
                 
                 if (useLeftSidebar && leftSidebarWidth > 50) {
@@ -1304,13 +1327,36 @@ body.dark-mode .jqbga-slider--image img {
             
             scheduleNextQuote();
             
-        }, 3800);
+        }, 50);
+    }
+    
+    // Start quotes after splash screen fades (3000ms splash + 800ms fade = 3800ms)
+    // But listen for the splash removal as well
+    function waitForSplashEnd() {
+        const splash = document.querySelector('.welcome-splash');
+        if (splash) {
+            // Splash exists, wait for it to be removed or faded
+            const observer = new MutationObserver(function(mutations, obs) {
+                const splash = document.querySelector('.welcome-splash');
+                if (!splash || splash.style.opacity === '0') {
+                    obs.disconnect();
+                    initFloatingQuotes();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+            
+            // Fallback: start after 3.9 seconds regardless
+            setTimeout(initFloatingQuotes, 3900);
+        } else {
+            // No splash, start immediately
+            initFloatingQuotes();
+        }
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initFloatingQuotes);
+        document.addEventListener('DOMContentLoaded', waitForSplashEnd);
     } else {
-        initFloatingQuotes();
+        waitForSplashEnd();
     }
 })();
 </script>
